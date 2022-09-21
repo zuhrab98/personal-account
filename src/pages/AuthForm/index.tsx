@@ -1,13 +1,41 @@
-import { Button, TextField, Typography } from "@mui/material"
+import { Alert, Button, TextField, Typography } from "@mui/material"
 import React, { useState } from "react"
-import styles from "./Login.module.css"
+import { useNavigate } from "react-router-dom"
+import styles from "./AuthForm.module.css"
 
 type Form = {
   login: string
   password: string
 }
 
+type UsersName = {
+  id: number
+  name: string
+  username: string
+  email: string
+  address: {
+    street: string
+    suite: string
+    city: string
+    zipcode: string
+    geo: {
+      lat: string
+      lng: string
+    }
+  }
+  phone: string
+  website: string
+  company: {
+    name: string
+    catchPhrase: string
+    bs: string
+  }
+}
+
 export const AuthForm = () => {
+  const navigate = useNavigate()
+  const [userName, setUserName] = useState<UsersName[]>([])
+  const [error, setError] = useState<Boolean>(false)
   const [formValues, setFormValues] = useState<Form>({
     login: "",
     password: "",
@@ -20,7 +48,6 @@ export const AuthForm = () => {
 
   const handleSubmit = (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
-    console.log(formValues)
     setFormValues({ login: "", password: "" })
   }
 
