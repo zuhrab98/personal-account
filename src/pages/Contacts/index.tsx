@@ -11,7 +11,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './Contacts.module.css'
-import { useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import axios from "axios";
 import {Url} from "../../constans";
 
@@ -46,6 +46,29 @@ export const Contacts = () => {
         }
     };
 
+    const editTodo = (i: number,  event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setMainList(
+            mainList.map((item, index) => {
+                if (index === i) {
+                    item.name = event.target.value;
+                }
+                return item;
+            }),
+        );
+    };
+
+    const toggleMode = (i: number) => {
+        setMainList(
+            mainList.map((item, index) => {
+                if (index === i) {
+                    item.isEdit = !item.isEdit;
+                }
+                return item;
+            }),
+        );
+    };
+
+
     return (
         <Box className={styles.root}>
             <Typography variant='h4' component='h1' sx={{textAlign: 'center', mb: 2}}> Список Контактов </Typography>
@@ -57,7 +80,8 @@ export const Contacts = () => {
                             className={styles.list}
                             secondaryAction={
                                 <>
-                                    <IconButton sx={{mr: 1}} edge="end" aria-label="edit">
+                                    <IconButton sx={{mr: 1}} edge="end" aria-label="edit"
+                                                onClick={() => toggleMode(index)}>
                                         {isEdit ? <SaveIcon/> : <EditIcon/>}
                                     </IconButton>
                                     <IconButton edge="end" aria-label="delete" onClick={() => deleteContact(id)}>
@@ -69,8 +93,10 @@ export const Contacts = () => {
                             <ListItemButton role={undefined} dense>
                                 {isEdit ? (
                                     <Input
+                                        onChange={((event) => editTodo(index, event))}
                                         autoFocus
                                         value={name}/>
+
                                 ) : (
                                     <ListItemText>{name}</ListItemText>
                                 )}
