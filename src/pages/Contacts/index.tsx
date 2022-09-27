@@ -35,34 +35,44 @@ export const Contacts = () => {
         })
     }, [])
 
+    const deleteContact = async (id: string) => {
+        try {
+            setLoading(true)
+            await axios.delete(`${Url.CONTACTS}/${id}`)
+            setLoading(false)
+            setMainList(mainList.filter((item) => item.id !== id))
+        } catch (error) {
+            console.error(error)
+        }
+    };
 
     return (
         <Box className={styles.root}>
-            <Typography variant='h4' component='h1' sx={{textAlign: 'center', mb: 2}}> Список Контактов</Typography>
+            <Typography variant='h4' component='h1' sx={{textAlign: 'center', mb: 2}}> Список Контактов </Typography>
             <CardContent sx={{padding: 0}}>
                 <List>
-                    {loading ? <div className={styles.loading}></div> : mainList.map((item, index) => (
+                    {loading ? <div className={styles.loading}></div> : mainList.map(({name, id, isEdit}, index) => (
                         <ListItem
                             key={index}
                             className={styles.list}
                             secondaryAction={
                                 <>
                                     <IconButton sx={{mr: 1}} edge="end" aria-label="edit">
-                                        {item.isEdit ? <SaveIcon/> : <EditIcon/>}
+                                        {isEdit ? <SaveIcon/> : <EditIcon/>}
                                     </IconButton>
-                                    <IconButton edge="end" aria-label="delete">
+                                    <IconButton edge="end" aria-label="delete" onClick={() => deleteContact(id)}>
                                         <DeleteIcon/>
                                     </IconButton>
                                 </>
 
                             }>
                             <ListItemButton role={undefined} dense>
-                                {item.isEdit ? (
+                                {isEdit ? (
                                     <Input
                                         autoFocus
-                                        value={item.name}/>
+                                        value={name}/>
                                 ) : (
-                                    <ListItemText>{item.name}</ListItemText>
+                                    <ListItemText>{name}</ListItemText>
                                 )}
                             </ListItemButton>
                         </ListItem>
