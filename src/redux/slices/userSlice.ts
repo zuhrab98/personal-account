@@ -43,10 +43,10 @@ type UserState = {
 export const fetchAuthUser = createAsyncThunk<Users, string,  { rejectValue: string }>('user/fetchAuthUserStatus',
     async (userName: string, {rejectWithValue}) => {
        const response = await axios.get<Users[]>(Url.USERS)
-        console.dir(response)
        if (response.status !== 200) {
            throw new Error('Error')
        }
+        console.dir(userName)
        const isUser =  response.data.find(item => item.username === userName)
 
        if (!isUser) {

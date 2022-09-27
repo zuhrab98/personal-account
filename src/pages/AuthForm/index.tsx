@@ -1,4 +1,6 @@
-import { Alert, Button, TextField, Typography } from "@mui/material"
+import {Alert, Button, InputAdornment, TextField, Typography} from "@mui/material"
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import KeyIcon from '@mui/icons-material/Key';
 import React, {useState} from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -23,9 +25,9 @@ export const AuthForm = () => {
   })
 
   const handleInputChange = (e: React.FormEvent<EventTarget>) => {
-    const { name, value } = e.target as HTMLInputElement
-    setFormValues({ ...formValues, [name]: value })
-  }
+    const {name, value} = e.target as HTMLInputElement
+    setFormValues({...formValues, [name]: value})
+  };
 
   const handleSubmit = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
@@ -38,47 +40,62 @@ export const AuthForm = () => {
   }
 
   return (
-    <div className={styles.root}>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Авторизация
-        </Typography>
-        <TextField
-          margin="normal"
-          label="Логин"
-          name="login"
-          type="text"
-          value={formValues.login}
-          fullWidth
-          onChange={handleInputChange}
-          required
-        />
+      <div className={styles.root}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <Typography variant="h4" sx={{textAlign: "center"}}>
+            Авторизация
+          </Typography>
+          <TextField
+              margin="normal"
+              label="Логин"
+              name="login"
+              type="text"
+              value={formValues.login}
+              fullWidth
+              onChange={handleInputChange}
+              required
+              InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircleIcon />
+                    </InputAdornment>
+                ),
+              }}
+          />
 
-        <TextField
-          margin="normal"
-          label="Пароль"
-          name="password"
-          type="password"
-          value={formValues.password}
-          fullWidth
-          onChange={handleInputChange}
-          required
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className="sd"
-        >
-          Вход
-        </Button>
-      </form>
-      {error && (
-        <Alert severity="error" sx={{ marginTop: 2, justifyContent: "center" }}>
-          {error}
-        </Alert>
-      )}
-    </div>
-  )
+          <TextField
+              margin="normal"
+              label="Пароль"
+              name="password"
+              type="password"
+              value={formValues.password}
+              fullWidth
+              onChange={handleInputChange}
+              required
+              InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                      <KeyIcon />
+                    </InputAdornment>
+                ),
+              }}
+          />
+          <Button
+              sx={{mt: '10px'}}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className="sd"
+          >
+            Вход
+          </Button>
+        </form>
+        {error && (
+            <Alert severity="error" sx={{marginTop: 2, justifyContent: "center"}}>
+              {error}
+            </Alert>
+        )}
+      </div>
+  );
 }

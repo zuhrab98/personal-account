@@ -5,3 +5,7 @@
   width: 400px;
   margin: 200px auto;
 }
+
+.form input {
+  padding: 12px;
+}

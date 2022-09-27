@@ -1,0 +1,30 @@
+.root {
+    max-width: 550px;
+    margin: 200px auto;
+    padding: 40px;
+    background: #cacaca;
+    border-radius: 10px;
+}
+
+.list {
+    background: #fff;
+    border: 1px solid #767676;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+.loading {
+    margin: 0 auto 20px;
+    border: 3px solid #46a6ff;
+    border-top-color: #1976d2;
+    border-radius: 50%;
+    width: 3em;
+    height: 3em;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
