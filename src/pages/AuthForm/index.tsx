@@ -1,41 +1,22 @@
 import { Alert, Button, TextField, Typography } from "@mui/material"
-import React, { useState } from "react"
+import React, {useState} from "react"
 import { useNavigate } from "react-router-dom"
+
+import { Pages } from "../../constans"
 import styles from "./AuthForm.module.css"
+import {useSelector} from "react-redux";
+import {useAppDispatch} from "../../redux/store";
+import {fetchAuthUser, selectUser} from "../../redux/slices/userSlice";
 
 type Form = {
   login: string
   password: string
 }
 
-type UsersName = {
-  id: number
-  name: string
-  username: string
-  email: string
-  address: {
-    street: string
-    suite: string
-    city: string
-    zipcode: string
-    geo: {
-      lat: string
-      lng: string
-    }
-  }
-  phone: string
-  website: string
-  company: {
-    name: string
-    catchPhrase: string
-    bs: string
-  }
-}
-
 export const AuthForm = () => {
   const navigate = useNavigate()
-  const [userName, setUserName] = useState<UsersName[]>([])
-  const [error, setError] = useState<Boolean>(false)
+  const dispatch = useAppDispatch()
+  const { error } = useSelector(selectUser)
   const [formValues, setFormValues] = useState<Form>({
     login: "",
     password: "",
@@ -46,14 +27,19 @@ export const AuthForm = () => {
     setFormValues({ ...formValues, [name]: value })
   }
 
-  const handleSubmit = (event: React.FormEvent<EventTarget>) => {
+  const handleSubmit = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
-    setFormValues({ login: "", password: "" })
+    setFormValues({ login: "", password: "", } )
+    const isUser = await dispatch(fetchAuthUser(formValues.login)).unwrap()
+
+    if (isUser) {
+      navigate(Pages.Contacts)
+    }
   }
 
   return (
     <div className={styles.root}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <Typography variant="h4" sx={{ textAlign: "center" }}>
           Авторизация
         </Typography>
@@ -88,6 +74,11 @@ export const AuthForm = () => {
           Вход
         </Button>
       </form>
+      {error && (
+        <Alert severity="error" sx={{ marginTop: 2, justifyContent: "center" }}>
+          {error}
+        </Alert>
+      )}
     </div>
   )
 }

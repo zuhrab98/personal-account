@@ -1,4 +1,7 @@
 .root {
+  padding: 30px;
+  border-radius: 15px;
+  background: #fff;
   width: 400px;
   margin: 200px auto;
 }

@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 
-import { authFormSlice } from './slices/authFormSlice'
+import userSlice from "./slices/userSlice";
 
 export const store = configureStore({
   reducer: {
-    // login: authFormSlice,
-  }
+    user: userSlice
+  },
 })
 
 export type RootState = ReturnType<typeof store.getState>
