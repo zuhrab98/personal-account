@@ -1,62 +1,56 @@
 import styles from "../Contacts.module.css";
-import {Box, IconButton, Input, ListItem, ListItemButton, ListItemText} from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
+import {Box, IconButton, ListItem, ListItemButton, ListItemText} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import React, {ChangeEvent} from "react";
+import React, { useState} from "react";
+import {EditContactModal} from "../EditContactModal";
 
 type Props = {
+    item: {
+        isEdit: boolean
+        phone: string
+        name: string
+        id: string
+    }
     index: number
-    isEdit: boolean
-    phone: string
-    name: string
-    id: string
-    editContact: (i: number, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     deleteContact: (id: string) => void
-    toggleMode: (i: number) => void
 }
 
-export const ListItems: React.FC<Props> = ({index, isEdit, phone, name, editContact, id, deleteContact, toggleMode}) => {
+export const ListItems: React.FC<Props> = ({item, index, deleteContact}) => {
+    const [isEditContactToggle, setEditContactToggle] = useState(false);
+
+    const handleEditToggle = () => {
+        setEditContactToggle(prev => !prev)
+    }
+
     return (
-        <ListItem
-            key={index}
-            className={styles.list}
-            secondaryAction={
-                <>
-                    <IconButton sx={{mr: 1}} edge="end" aria-label="edit"
-                                onClick={() => toggleMode(index)}>
-                        {isEdit ? <SaveIcon/> : <EditIcon/>}
-                    </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={() => deleteContact(id)}>
-                        <DeleteIcon/>
-                    </IconButton>
-                </>
+        <>
+            <ListItem
+                key={index}
+                className={styles.list}
+                secondaryAction={
+                    <>
+                        <IconButton
+                            sx={{mr: 1}}
+                            edge="end"
+                            aria-label="edit"
+                            onClick={handleEditToggle}>
+                            <EditIcon/>
+                        </IconButton>
+                        <IconButton edge="end" aria-label="delete" onClick={() => deleteContact(item.id)}>
+                            <DeleteIcon/>
+                        </IconButton>
+                    </>
 
-            }>
-            <ListItemButton dense sx={{padding: 0}}>
-                {isEdit ? (
-                    <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                        <Input
-                            sx={{fontSize: '18px'}}
-                            name='name'
-                            onChange={((event) => editContact(index, event))}
-                            autoFocus
-                            value={name}/>
-                        <Input
-                            sx={{fontSize: '18px'}}
-                            name='phone'
-                            onChange={((event) => editContact(index, event))}
-                            autoFocus
-                            value={phone}/>
-                    </Box>
-
-                ) : (
+                }>
+                <ListItemButton dense sx={{padding: 0}}>
                     <Box>
-                        <ListItemText>Name: {name}</ListItemText>
-                        <ListItemText>Phone: {phone}</ListItemText>
+                        <ListItemText>Name: {item.name}</ListItemText>
+                        <ListItemText>Phone: {item.phone}</ListItemText>
                     </Box>
-                )}
-            </ListItemButton>
-        </ListItem>
-    )
+                </ListItemButton>
+            </ListItem>
+            <EditContactModal handleToggle={handleEditToggle} open={isEditContactToggle} item={item}/>
+        </>
+    );
 }
