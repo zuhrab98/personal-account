@@ -1,27 +1,28 @@
 import {Box, Button, CardContent, List, Typography} from "@mui/material";
 import styles from './Contacts.module.css'
-import { useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import {ListItems} from "./ListItem";
 import {useAppDispatch} from "../../redux/store";
 import {deleteContact, fetchContacts, selectContact} from "../../redux/slices/contactSlice";
 import {useSelector} from "react-redux";
-
+import {ModalContact} from "../../components/Modal";
 
 export const Contacts = () => {
     const dispatch = useAppDispatch()
     const { contacts, status } = useSelector(selectContact)
-    const [isAddContactToggle, setAddContactToggle] = useState(false);
+    const [isAddContact, setAddContact] = useState(false);
 
     useEffect(() => {
         dispatch(fetchContacts())
     }, [dispatch]);
 
-    const deleteYourContact =  (id: string) => {
-        dispatch(deleteContact(id));
+    const handleDeleteContact =  (id: string) => {
+        const isDelete = window.confirm('Вы уверены, что хотите удалить ?')
+        isDelete && dispatch(deleteContact(id));
     };
 
-    const handleToggle = () => {
-        setAddContactToggle(prev => !prev)
+    const handleAddContact = () => {
+        setAddContact(prev => !prev)
     }
 
     return (
@@ -36,13 +37,21 @@ export const Contacts = () => {
                                     key={item.id}
                                     item={item}
                                     index={index}
-                                    deleteContact={deleteYourContact}/>
+                                    deleteContact={handleDeleteContact}
+                                />
                             )) : <Typography textAlign='center'> Нет контактов </Typography>
                     }
                 </List>
             </CardContent>
-            <Button fullWidth type="button" variant='contained' color='primary'
-                    onClick={handleToggle}> Добавить </Button>
+            <Button
+                fullWidth
+                type="button"
+                variant='contained'
+                color='primary'
+                onClick={handleAddContact}
+            > Добавить </Button>
+
+            <ModalContact handleToggle={handleAddContact} open={isAddContact}/>
         </Box>
     );
 }

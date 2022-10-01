@@ -3,24 +3,20 @@ import {Box, IconButton, ListItem, ListItemButton, ListItemText} from "@mui/mate
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState} from "react";
-import {EditContactModal} from "../EditContactModal";
+import {ModalContact} from "../../../components/Modal";
+import {ContactType} from "../../../redux/slices/contactSlice";
 
 type Props = {
-    item: {
-        isEdit: boolean
-        phone: string
-        name: string
-        id: string
-    }
+    item: ContactType
     index: number
     deleteContact: (id: string) => void
 }
 
-export const ListItems: React.FC<Props> = ({item, index, deleteContact}) => {
-    const [isEditContactToggle, setEditContactToggle] = useState(false);
+export const ListItems: React.FC<Props> = ({item, index, deleteContact }) => {
+    const [isEditContact, setEditContact] = useState(false);
 
-    const handleEditToggle = () => {
-        setEditContactToggle(prev => !prev)
+    const handleEditContact = () => {
+        setEditContact(prev => !prev)
     }
 
     return (
@@ -34,7 +30,7 @@ export const ListItems: React.FC<Props> = ({item, index, deleteContact}) => {
                             sx={{mr: 1}}
                             edge="end"
                             aria-label="edit"
-                            onClick={handleEditToggle}>
+                            onClick={handleEditContact}>
                             <EditIcon/>
                         </IconButton>
                         <IconButton edge="end" aria-label="delete" onClick={() => deleteContact(item.id)}>
@@ -44,13 +40,16 @@ export const ListItems: React.FC<Props> = ({item, index, deleteContact}) => {
 
                 }>
                 <ListItemButton dense sx={{padding: 0}}>
+                    <Box className={styles.imgWrap}>
+                        <img src={item.avatar} alt="avatar"/>
+                    </Box>
                     <Box>
                         <ListItemText>Name: {item.name}</ListItemText>
                         <ListItemText>Phone: {item.phone}</ListItemText>
                     </Box>
                 </ListItemButton>
             </ListItem>
-            <EditContactModal handleToggle={handleEditToggle} open={isEditContactToggle} item={item}/>
+            <ModalContact handleToggle={handleEditContact} open={isEditContact} item={item}/>
         </>
     );
 }

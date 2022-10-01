@@ -2,8 +2,9 @@
     max-width: 550px;
     margin: 200px auto;
     padding: 40px;
-    background: #cacaca;
+    background: #ffffff;
     border-radius: 10px;
+    box-shadow: -1px 3px 19px 10px rgba(0, 0, 0, 0.11);
 }
 
 .list {
@@ -11,6 +12,7 @@
     border: 1px solid #767676;
     border-radius: 10px;
     margin-top: 5px;
+    box-shadow: -1px 3px 19px -4px rgba(0, 0, 0, 0.18);
 }
 
 .loading {
@@ -27,5 +29,16 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+.imgWrap {
+    display: flex;
+    margin-right: 10px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.imgWrap img {
+    width: 60px;
 }
 
