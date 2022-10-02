@@ -27,7 +27,7 @@ export const Contacts = () => {
 
     return (
         <Box className={styles.root}>
-            <Typography variant='h4' component='h1' sx={{textAlign: 'center', mb: 2}}> Список Контактов </Typography>
+            <Typography variant='h4' component='h1' sx={{textAlign: 'center', mb: 2}}> Список контактов </Typography>
             <CardContent sx={{padding: 0}}>
                 <List>
                     {status === 'loading' ? <div className={styles.loading}></div> :
@@ -51,7 +51,7 @@ export const Contacts = () => {
                 onClick={handleAddContact}
             > Добавить </Button>
 
-            <ModalContact handleToggle={handleAddContact} open={isAddContact}/>
+            <ModalContact handleToggle={handleAddContact} open={isAddContact} action='Добавить контакт'/>
         </Box>
     );
 }

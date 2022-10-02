@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 import {useAppDispatch} from "../../redux/store";
 import {fetchAuthUser, selectUser} from "../../redux/slices/userSlice";
 
-type Form = {
+export type Form = {
   login: string
   password: string
 }
@@ -32,7 +32,7 @@ export const AuthForm = () => {
   const handleSubmit = async (event: React.FormEvent<EventTarget>) => {
     event.preventDefault()
     setFormValues({ login: "", password: "", } )
-    const isUser = await dispatch(fetchAuthUser(formValues.login)).unwrap()
+    const isUser = await dispatch(fetchAuthUser(formValues)).unwrap()
 
     if (isUser) {
       navigate(Pages.Contacts)

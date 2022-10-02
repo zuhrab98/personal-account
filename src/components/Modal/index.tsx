@@ -7,6 +7,7 @@ import {useAppDispatch} from "../../redux/store";
 interface Props {
     open: boolean
     item?: ContactType
+    action: string
     handleToggle: () => void
 }
 
@@ -15,7 +16,7 @@ type Form = {
     phone: string,
 }
 
-export const ModalContact: React.FC<Props> = ({open, handleToggle, item}) => {
+export const ModalContact: React.FC<Props> = ({open, handleToggle, item, action}) => {
     const dispatch = useAppDispatch()
     const contact = {name: item ? item.name : '', phone: item ? item.phone : ''}
     const [editContactPerson, setEditContactPerson] = useState<Form>(contact)
@@ -66,7 +67,7 @@ export const ModalContact: React.FC<Props> = ({open, handleToggle, item}) => {
                         type="submit"
                         variant='contained'
                         color='primary'
-                    > Сохранить изменения </Button>
+                    >{action}</Button>
                 </form>
             </Box>
         </Modal>

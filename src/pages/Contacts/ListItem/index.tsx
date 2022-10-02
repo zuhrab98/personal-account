@@ -44,12 +44,12 @@ export const ListItems: React.FC<Props> = ({item, index, deleteContact }) => {
                         <img src={item.avatar} alt="avatar"/>
                     </Box>
                     <Box>
-                        <ListItemText>Name: {item.name}</ListItemText>
-                        <ListItemText>Phone: {item.phone}</ListItemText>
+                        <ListItemText><b>Name</b>: {item.name}</ListItemText>
+                        <ListItemText><b>Phone</b>: {item.phone}</ListItemText>
                     </Box>
                 </ListItemButton>
             </ListItem>
-            <ModalContact handleToggle={handleEditContact} open={isEditContact} item={item}/>
+            <ModalContact handleToggle={handleEditContact} open={isEditContact} item={item} action='Сохранить изменения'/>
         </>
     );
 }

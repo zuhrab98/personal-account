@@ -2,29 +2,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios';
 import {Url} from "../../constans";
 import {RootState} from "../store";
+import {Form} from "../../pages/AuthForm";
 
 type Users = {
     id: number
-    name: string
-    username: string
-    email: string
-    address: {
-        street: string
-        suite: string
-        city: string
-        zipcode: string
-        geo: {
-            lat: string
-            lng: string
-        }
-    }
-    phone: string
-    website: string
-    company: {
-        name: string
-        catchPhrase: string
-        bs: string
-    }
+    userName: string
+    password: string
 }
 
 enum STATUS {
@@ -40,13 +23,13 @@ type UserState = {
     error: string | null | undefined
 }
 
-export const fetchAuthUser = createAsyncThunk<Users, string,  { rejectValue: string }>('user/fetchAuthUserStatus',
-    async (userName: string, {rejectWithValue}) => {
+export const fetchAuthUser = createAsyncThunk<Users, Form,  { rejectValue: string }>('user/fetchAuthUserStatus',
+    async (formValues: Form, {rejectWithValue}) => {
        const {data, status} = await axios.get<Users[]>(Url.USERS)
        if (status !== 200) {
            throw new Error('Error')
        }
-       const isUser =  data.find(item => item.username === userName)
+       const isUser =  data.find(item => item.userName === formValues.login && item.password === formValues.password)
 
        if (!isUser) {
            return rejectWithValue('Такого пользователя не существует')
